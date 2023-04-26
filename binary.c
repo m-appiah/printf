@@ -23,32 +23,32 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	int output = 0;
+	unsigned int n;
 
-    va_start(args, format);
+	va_start(args, format);
 
-    while (*format != '\0')
-    {
-        if (*format == '%')
-        {
-            format++;
+	while (*format != '\0')
+	{
+		if (*format == '%')
+		{
+			format++;
+			if (*format == 'b')
+			{
+				n = va_arg(args, unsigned int);
+				binary(n);
+				output += sizeof(unsigned int) * CHAR_BIT;
+			}
+		}
+		else
+		{
+			_putchar(*format);
+			output++;
+		}
 
-            if (*format == 'b')
-            {
-                unsigned int n = va_arg(args, unsigned int);
-                binary(n);
-                output += sizeof(unsigned int) * CHAR_BIT;
-	    }
-        }
-        else
-        {
-            _putchar(*format);
-            output++;
-        }
+	format++;
+	}
 
-        format++;
-    }
+	va_end(args);
 
-    va_end(args);
-
-    return (output);
+	return (output);
 }
